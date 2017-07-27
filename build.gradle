@@ -1,0 +1,159 @@
+buildscript {
+    // 下载插件所需要的仓库地址
+    repositories {
+        maven {
+            url "http://repo.startimes.me/nexus/content/groups/public"
+        }
+        maven {
+            url 'http://10.0.250.77:8081/artifactory/plugins-release'
+        }
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public'
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    // 需要的插件
+    dependencies {
+        classpath 'com.qmino:miredot-plugin:1.6.2'
+        classpath "org.hidetake:gradle-ssh-plugin:2.1.2"
+    }
+}
+plugins {
+//    id 'org.hidetake.ssh' version '2.1.2'
+    id "org.flywaydb.flyway" version "4.0.3"
+}
+apply plugin: "org.hidetake.ssh"
+
+ext {
+    guavaVersion = '19.0'
+    curatorVersion = '2.8.0'
+    log4jVersion = '1.2.17'
+    groovyVersion = '2.4.6'
+    slf4jLog4j12Version = '1.7.5'
+    slf4jVersion = '1.7.16'
+    springFrameworkVersion = '4.2.0.RELEASE'
+}
+
+List curator = ["org.apache.curator:curator-client:${curatorVersion}",
+                "org.apache.curator:curator-framework:${curatorVersion}",
+                "org.apache.curator:curator-recipes:${curatorVersion}"]
+
+
+remotes {
+    developServer {
+        host = "10.0.251.150"
+        user = "root"
+        password = "123456"
+        knownHosts = allowAnyHosts
+    }
+}
+configure(allprojects.findAll { it.subprojects.empty }) {
+    task create_dirs {
+        doLast {
+            sourceSets*.java.srcDirs*.each {it.mkdirs()}
+            sourceSets*.resources.srcDirs*.each {it.mkdirs()}
+        }
+    }
+
+    // 引入插件
+    apply plugin: 'java'
+
+    repositories {
+        maven {
+            url "http://repo.startimes.me/nexus/content/groups/public"
+        }
+        maven {
+            url 'http://10.0.250.77:8081/artifactory/plugins-release'
+        }
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public'
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    compileJava.options.encoding = 'UTF-8'
+
+    javadoc {
+        options.charSet = 'utf8'
+        options.encoding = 'utf8'
+        options.docEncoding = 'utf8'
+        options.memberLevel = JavadocMemberLevel.PRIVATE
+    }
+
+    // 生成source包的task
+    task sourceJar(type: Jar, dependsOn: classes) {
+        group = 'build'
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+}
+
+configure(subprojects.findAll { it.name.endsWith('-api') }) {
+    apply plugin: 'idea'
+    apply plugin: 'miredot'
+    miredot {
+        source = sourceSets.main.allJava
+        destination = sourceSets.main.output
+        license = 'licenseKey'
+    }
+}
+configure(subprojects.findAll { it.name.endsWith('-service') }) {
+    apply plugin: 'war'
+    dependencies {
+        compile "org.springframework:spring-core:${springFrameworkVersion}"
+    }
+}
+
+project('platform:platform-config') {
+    apply plugin: 'application'
+    mainClassName = "com.star.common.config.ConfigService"
+
+    dependencies {
+        compile curator
+        compile "com.google.guava:guava:${guavaVersion}"
+        compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+        compile "log4j:log4j:${log4jVersion}"
+        // todo 该依赖为需要剔除的
+        compile "org.slf4j:slf4j-log4j12:${slf4jLog4j12Version}"
+        compile "org.slf4j:slf4j-api:${slf4jVersion}"
+
+    }
+}
+
+project('service:template:template-service') {
+    dependencies {
+        compile project(':service:template:template-api')
+        compile project(':platform:platform-common')
+        compile "org.slf4j:slf4j-log4j12:${slf4jLog4j12Version}"
+        compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    }
+}
+
+
+task serverStatus {
+    def containerName = 'template_service'
+    doLast {
+        println getContainerStatus(remotes.developServer, containerName)
+    }
+}
+
+def getContainerStatus(server, containerName) {
+    def containerStatus
+    try{
+        ssh.run {
+            println(server.host+' '+containerName)
+            if (server.host != null) {
+                session(server) {
+                    containerStatus = execute "docker ps -aqf 'name=" + containerName + "' --format '{{ .Status }}'"
+                }
+            }
+        }
+    }catch (Exception e){
+        println e
+    }
+    return containerStatus
+}
