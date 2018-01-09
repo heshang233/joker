@@ -1,7 +1,6 @@
-rootProject.name = 'gradle-demo'
+rootProject.name = 'joker'
 
 include 'platform:platform-common'
-include 'platform:platform-config'
-include 'service:template:template-api'
-include 'service:template:template-service'
+include 'service:ralasafe:ralasafe-demo'
+include 'service:ralasafe:ralasafe-service'
 

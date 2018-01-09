@@ -50,12 +50,6 @@ remotes {
     }
 }
 configure(allprojects.findAll { it.subprojects.empty }) {
-    task create_dirs {
-        doLast {
-            sourceSets*.java.srcDirs*.each {it.mkdirs()}
-            sourceSets*.resources.srcDirs*.each {it.mkdirs()}
-        }
-    }
 
     // 引入插件
     apply plugin: 'java'
@@ -90,6 +84,11 @@ configure(allprojects.findAll { it.subprojects.empty }) {
         from sourceSets.main.allSource
     }
 
+    task createJavaProject {
+        sourceSets*.java.srcDirs*.each { it.mkdirs() }
+        sourceSets*.resources.srcDirs*.each { it.mkdirs()}
+    }
+
 }
 
 configure(subprojects.findAll { it.name.endsWith('-api') }) {
@@ -108,52 +107,17 @@ configure(subprojects.findAll { it.name.endsWith('-service') }) {
     }
 }
 
-project('platform:platform-config') {
-    apply plugin: 'application'
-    mainClassName = "com.star.common.config.ConfigService"
-
+project('platform:platform-common') {
     dependencies {
-        compile curator
-        compile "com.google.guava:guava:${guavaVersion}"
-        compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
-        compile "log4j:log4j:${log4jVersion}"
-        // todo 该依赖为需要剔除的
-        compile "org.slf4j:slf4j-log4j12:${slf4jLog4j12Version}"
-        compile "org.slf4j:slf4j-api:${slf4jVersion}"
-
     }
 }
 
-project('service:template:template-service') {
+project('service:ralasafe:ralasafe-demo') {
     dependencies {
-        compile project(':service:template:template-api')
-        compile project(':platform:platform-common')
-        compile "org.slf4j:slf4j-log4j12:${slf4jLog4j12Version}"
-        compile "org.slf4j:slf4j-api:${slf4jVersion}"
     }
 }
 
-
-task serverStatus {
-    def containerName = 'template_service'
-    doLast {
-        println getContainerStatus(remotes.developServer, containerName)
+project('service:ralasafe:ralasafe-service') {
+    dependencies {
     }
-}
-
-def getContainerStatus(server, containerName) {
-    def containerStatus
-    try{
-        ssh.run {
-            println(server.host+' '+containerName)
-            if (server.host != null) {
-                session(server) {
-                    containerStatus = execute "docker ps -aqf 'name=" + containerName + "' --format '{{ .Status }}'"
-                }
-            }
-        }
-    }catch (Exception e){
-        println e
-    }
-    return containerStatus
 }
