@@ -3,4 +3,6 @@ rootProject.name = 'joker'
 include 'platform:platform-common'
 include 'service:ralasafe:ralasafe-demo'
 include 'service:ralasafe:ralasafe-service'
-
+include 'service:jpa:jpa-demo'
+include 'service:restful:resteasy-server'
+include 'service:restful:resteasy-client'

@@ -1,0 +1,13 @@
+ext {
+    remotes {
+        developServer {
+            host = "10.0.251.150"
+            user = "root"
+            password = "123456"
+            knownHosts = allowAnyHosts
+        }
+    }
+
+    // 第三方依赖版本号管理
+    springFrameworkVersion = '4.2.0.RELEASE'
+}
