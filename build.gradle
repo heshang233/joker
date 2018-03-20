@@ -108,11 +108,23 @@ project('service:restful:resteasy-server'){
         compile group: 'org.jboss.resteasy', name: 'resteasy-servlet-initializer', version: '3.1.4.Final'
         compile group: 'org.jboss.resteasy', name: 'resteasy-jaxb-provider', version: '3.1.4.Final'
         compile group: 'org.jboss.resteasy', name: 'resteasy-spring', version: '3.1.4.Final'
-        compile group: 'org.springframework', name: 'spring-core', version: '4.3.9.RELEASE'
-        compile group: 'org.springframework', name: 'spring-test', version: '4.3.9.RELEASE'
-        compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.9.RELEASE'
-        compile group: 'org.springframework', name: 'spring-orm', version: '4.3.9.RELEASE'
-        compile group: 'org.springframework', name: 'spring-tx', version: '4.3.9.RELEASE'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-links', version: '3.1.4.Final'
+        compile group: 'org.springframework', name: 'spring-core', version: "${springFrameworkVersion}"
+        compile group: 'org.springframework', name: 'spring-test', version: "${springFrameworkVersion}"
+        compile group: 'org.springframework', name: 'spring-webmvc', version: "${springFrameworkVersion}"
+        compile group: 'org.springframework', name: 'spring-orm', version: "${springFrameworkVersion}"
+        compile group: 'org.springframework', name: 'spring-tx', version: "${springFrameworkVersion}"
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jaxb-annotations', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+        compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.6'
+        compile group: 'org.apache.httpcomponents', name: 'httpasyncclient', version: '4.0.2'
+        compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.6'
+        compile group: 'org.json', name: 'json', version: '20140107'
+
     }
 }
 

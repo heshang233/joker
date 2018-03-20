@@ -1,7 +1,11 @@
 package com.joker.restful.api;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import com.joker.restful.dto.FasterXmlDTO;
+import com.joker.restful.dto.TestDTO;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.PathSegment;
 
 /**
  * @author huangsy
@@ -10,5 +14,26 @@ import javax.ws.rs.Path;
 @Path("/users")
 public interface UserService {
     @GET
-    public String get();
+    String get();
+
+    @POST
+    @Path("{testdto}")
+    @Produces(MediaType.APPLICATION_JSON)
+    TestDTO postStr(@PathParam("testdto")TestDTO testDTO);
+
+    @GET
+    @Path("/{id}/{name}")
+    String pathSegement(@PathParam("id")PathSegment id, @PathParam("name") String name);
+
+    @POST
+    @Path("/xml")
+    @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_XML)
+    FasterXmlDTO xml(FasterXmlDTO fasterXmlDTO);
+
+    @POST
+    @Path("/getxml")
+    @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_XML)
+    FasterXmlDTO getxml();
 }

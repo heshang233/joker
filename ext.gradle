@@ -9,5 +9,6 @@ ext {
     }
 
     // 第三方依赖版本号管理
-    springFrameworkVersion = '4.2.0.RELEASE'
+    springFrameworkVersion = '4.3.9.RELEASE'
+    fasterxmlJacksonVersion = '2.9.4'
 }
