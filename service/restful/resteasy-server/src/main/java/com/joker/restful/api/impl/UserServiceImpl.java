@@ -3,6 +3,7 @@ package com.joker.restful.api.impl;
 import com.joker.restful.api.UserService;
 import com.joker.restful.dto.FasterXmlDTO;
 import com.joker.restful.dto.TestDTO;
+import com.joker.restful.holder.TestHolder;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.core.PathSegment;
@@ -63,5 +64,15 @@ public class UserServiceImpl implements UserService {
 
         fasterXmlDTO.setL1(fasterXmlDTOS);
         return fasterXmlDTO;
+    }
+
+    @Override
+    public String testHolder(String message) {
+        String enabled = TestHolder.isEnabled();
+        System.out.println("=============holder boolean:"+enabled);
+        TestHolder.disable(message);
+        System.out.println("=============holder disable");
+        TestHolder.remove();
+        return enabled;
     }
 }

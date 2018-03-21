@@ -36,4 +36,8 @@ public interface UserService {
     @Produces(MediaType.APPLICATION_XML)
     @Consumes(MediaType.APPLICATION_XML)
     FasterXmlDTO getxml();
+
+    @GET
+    @Path("/testholder/{message}")
+    String testHolder(@PathParam("message")String message);
 }

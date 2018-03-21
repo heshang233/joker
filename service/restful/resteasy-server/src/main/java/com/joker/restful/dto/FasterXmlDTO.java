@@ -36,7 +36,8 @@ public class FasterXmlDTO {
 
     @JacksonXmlElementWrapper(useWrapping = false)
 //    @JsonProperty("FasterXmlDTO")
-    @JacksonXmlProperty(localName = "FasterXmlDTO")
+    @JacksonXmlProperty(localName = "FasterXmlDTOx")
+    @XmlElementRef(name = "FasterXmlDTOx")
     private List<FasterXmlDTO> l1 = new ArrayList<>();
 
     /*@XmlElementRef

@@ -22,6 +22,7 @@ public class FasterXmlTest {
         @JacksonXmlElementWrapper(useWrapping = false)
         public List<Bar> firstBar = new ArrayList<Bar>();
         @JacksonXmlElementWrapper(useWrapping = false)
+        @JacksonXmlProperty(localName = "SEC")
         public List<Bar> secondBar = new ArrayList<Bar>();
     }
 
@@ -77,7 +78,6 @@ public class FasterXmlTest {
             JacksonXmlModule module = new JacksonXmlModule();
             module.setDefaultUseWrapper(false);
             XmlMapper xmlMapper = new XmlMapper(module);
-            xmlMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             String xmlStr =  xmlMapper.writeValueAsString(fasterXmlDTO);
             System.out.println("=======");
             System.out.println(xmlStr);
