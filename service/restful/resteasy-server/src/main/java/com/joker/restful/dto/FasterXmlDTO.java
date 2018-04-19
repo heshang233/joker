@@ -31,6 +31,9 @@ public class FasterXmlDTO {
     @XmlElement
     private String a3;
 
+    @XmlElement
+    private Instant instant = Instant.now();
+
 //    @XmlElement
 //    private Instant instant = Instant.now();
 
@@ -99,4 +102,12 @@ public class FasterXmlDTO {
     public void setF1(FasterXmlDTO f1) {
         this.f1 = f1;
     }*/
+
+    public Instant getInstant() {
+        return instant;
+    }
+
+    public void setInstant(Instant instant) {
+        this.instant = instant;
+    }
 }

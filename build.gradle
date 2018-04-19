@@ -55,6 +55,9 @@ configure(allprojects.findAll { it.subprojects.empty }) {
     }
 
 }
+List logging = ["ch.qos.logback:logback-classic:${logbackVersion}",
+                "ch.qos.logback:logback-access:${logbackVersion}",
+                "org.slf4j:slf4j-api:${slf4jVersion}"]
 
 configure(subprojects.findAll { it.name.endsWith('-api') }) {
     apply plugin: 'idea'
@@ -124,11 +127,59 @@ project('service:restful:resteasy-server'){
         compile group: 'org.apache.httpcomponents', name: 'httpasyncclient', version: '4.0.2'
         compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.6'
         compile group: 'org.json', name: 'json', version: '20140107'
-
+        compile group: 'com.neovisionaries', name: 'nv-i18n', version: '1.22'
+        compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlJacksonVersion}"
+        compile "commons-net:commons-net:3.6"
+        compile logging
     }
 }
 
 project('service:restful:resteasy-client'){
     dependencies {
+    }
+}
+
+project('service:restful:resteasy-netty') {
+    dependencies {
+        compile group: 'junit', name: 'junit', version: '4.4'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '3.1.4.Final'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-jackson-provider', version: '3.1.4.Final'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-servlet-initializer', version: '3.1.4.Final'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-jaxb-provider', version: '3.1.4.Final'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-spring', version: '3.1.4.Final'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-links', version: '3.1.4.Final'
+        compile("org.jboss.resteasy:resteasy-netty:3.1.4.Final"){
+            exclude group: 'io.netty', module: 'netty'
+        }
+        compile group: 'io.netty', name: 'netty', version: '3.6.5.Final'
+        compile group: 'org.springframework', name: 'spring-core', version: "${springFrameworkVersion}"
+        compile group: 'org.springframework', name: 'spring-test', version: "${springFrameworkVersion}"
+        compile group: 'org.springframework', name: 'spring-webmvc', version: "${springFrameworkVersion}"
+        compile group: 'org.springframework', name: 'spring-orm', version: "${springFrameworkVersion}"
+        compile group: 'org.springframework', name: 'spring-tx', version: "${springFrameworkVersion}"
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jaxb-annotations', version: "${fasterxmlJacksonVersion}"
+        compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+        compile group: 'org.json', name: 'json', version: '20140107'
+        compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlJacksonVersion}"
+        compile logging
+    }
+}
+
+project('service:restful:resteasy-spring-boot'){
+    apply plugin: 'application'
+
+    mainClassName = "com.resteasy.springboot.Application"
+
+    dependencies {
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'1.5.8.RELEASE'
+        compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.0'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-validator-provider-11', version:'3.1.4.Final'
+        runtime group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version:'1.5.8.RELEASE'
+        runtime group: 'com.paypal.springboot', name: 'resteasy-spring-boot-starter', version:'2.3.4-RELEASE'
+        compile group: 'org.jboss.resteasy', name: 'resteasy-jaxb-provider', version: '3.1.4.Final'
     }
 }

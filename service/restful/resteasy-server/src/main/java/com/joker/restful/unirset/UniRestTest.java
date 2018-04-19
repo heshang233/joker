@@ -2,6 +2,7 @@ package com.joker.restful.unirset;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.joker.restful.dto.FasterXmlDTO;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
@@ -10,6 +11,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import javax.xml.bind.JAXBContext;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,27 +24,7 @@ import java.util.List;
 public class UniRestTest {
     public static void main(String[] args) {
 
-        Unirest.setObjectMapper(new ObjectMapper() {
-            private XmlMapper xmlMapper = new XmlMapper();
-
-            @Override
-            public <T> T readValue(String value, Class<T> valueType) {
-                try {
-                    return xmlMapper.readValue(value, valueType);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            @Override
-            public String writeValue(Object value) {
-                try {
-                    return xmlMapper.writeValueAsString(value);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        Unirest.setObjectMapper(new UnirestXmlObjectMapper());
 
         FasterXmlDTO fasterXmlDTO = new FasterXmlDTO();
         fasterXmlDTO.setI1(2121);

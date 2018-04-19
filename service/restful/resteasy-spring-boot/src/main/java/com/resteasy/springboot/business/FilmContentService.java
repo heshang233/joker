@@ -1,44 +1,34 @@
-package com.joker.restful.api;
+package com.resteasy.springboot.business;
 
-import com.joker.restful.dto.FasterXmlDTO;
-import com.joker.restful.dto.TestDTO;
-import com.joker.restful.util.*;
+import com.resteasy.springboot.domain.request.GetFilmFtpRequestDTO;
+import com.resteasy.springboot.domain.request.GetFilmInfoRequestDTO;
+import com.resteasy.springboot.domain.request.GetFilmListRequestDTO;
+import com.resteasy.springboot.domain.response.*;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.PathSegment;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author huangsy
- * @date 2018/1/27 13:04
+ * @date 2018/4/19 10:11
  */
 @Path("/")
-public interface UserService {
-    @GET
-    String get();
+public interface FilmContentService {
 
     @POST
-    @Path("{testdto}")
-    @Produces(MediaType.APPLICATION_JSON)
-    TestDTO postStr(@PathParam("testdto")TestDTO testDTO);
-
-
-    @POST
-    @Path("/add")
-    @Produces(MediaType.APPLICATION_JSON)
-    Set<String> xml(String uuid);
-
-    @POST
-    @Path("/getxml")
+    @Path("/FilmServices/AddFilmInfo")
     @Produces(MediaType.APPLICATION_XML)
     @Consumes(MediaType.APPLICATION_XML)
-    FasterXmlDTO getxml();
+    FilmListResultDTO addFilmContent(FilmInfoDTO dto);
 
-    @GET
-    @Path("/testholder/{message}")
-    String testHolder(@PathParam("message")String message);
+    @POST
+    @Path("/FilmServices/AddFilmDCP")
+    @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_XML)
+    FilmListResultDTO addFilmFtp(FilmFtpDTO dto) throws Exception;
 
     @POST
     @Path("/FilmServices/GetFilmList")

@@ -1,5 +1,8 @@
 package com.joker.restful.holder;
 
+import java.io.File;
+import java.io.FileFilter;
+
 /**
  * @author huangsy
  * @date 2018/3/21 11:32
@@ -33,5 +36,17 @@ public class TestHolder {
 
     public static void remove(){
         cache.remove();
+    }
+
+    public static void main(String[] args) {
+        File file = new File("D://ftptest");
+        String[] list = file.list();
+        for (String s : list) {
+            System.out.println(s);
+        }
+        File[] files = file.listFiles();
+        for (File file1 : files) {
+            System.out.println(file1.toString());
+        }
     }
 }

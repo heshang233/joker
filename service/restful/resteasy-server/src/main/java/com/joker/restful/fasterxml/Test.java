@@ -2,6 +2,12 @@ package com.joker.restful.fasterxml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.joker.restful.util.FilmInfoDTO;
+import com.joker.restful.util.FilmListDTO;
+import com.joker.restful.util.FilmListResultDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author huangsy
@@ -38,6 +44,44 @@ public class Test {
 
         fasterXmlTest2.getFasterXmlLists().add(fasterXmlList);
         fasterXmlTest2.getFasterXmlLists().add(fasterXmlList1);
+
+        /*FilmListResultDTO filmListResultDTO = new FilmListResultDTO();
+
+        filmListResultDTO.setStatus(0);
+        FilmListDTO filmListDTO = new FilmListDTO();
+
+        List<FilmInfoDTO> filmInfoDTOS = new ArrayList<>();
+        FilmInfoDTO filmInfoDTO1 = new FilmInfoDTO();
+        filmInfoDTO1.setActor("21123");
+        filmInfoDTO1.setAdminId("1312332");
+        filmInfoDTO1.setDescription("21fasd");
+        filmInfoDTO1.setDirector("fsfsd");
+        filmInfoDTO1.setDuration(100000L);
+        filmInfoDTO1.setLanguage("CN");
+        filmInfoDTO1.setName("asdasd");
+        filmInfoDTO1.setPlace("dasdasd");
+        filmInfoDTO1.setType("sda");
+        filmInfoDTO1.setUuid("dasdasd");
+
+        FilmInfoDTO filmInfoDTO2 = new FilmInfoDTO();
+        filmInfoDTO2.setActor("21123");
+        filmInfoDTO2.setAdminId("1312332");
+        filmInfoDTO2.setDescription("21fasd");
+        filmInfoDTO2.setDirector("fsfsd");
+        filmInfoDTO2.setDuration(100000L);
+        filmInfoDTO2.setLanguage("CN");
+        filmInfoDTO2.setName("asdasd");
+        filmInfoDTO2.setPlace("dasdasd");
+        filmInfoDTO2.setType("sda");
+        filmInfoDTO2.setUuid("dasdasd");
+
+        filmInfoDTOS.add(filmInfoDTO1);
+        filmInfoDTOS.add(filmInfoDTO2);
+
+        filmListDTO.setFilmCount(2);
+        filmListDTO.setFilmInfos(filmInfoDTOS);
+
+        filmListResultDTO.setFilmListDTO(filmListDTO);*/
 
         XmlMapper xmlMapper = new XmlMapper();
         String string = xmlMapper.writeValueAsString(fasterXmlTest2);

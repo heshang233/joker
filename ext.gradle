@@ -11,4 +11,6 @@ ext {
     // 第三方依赖版本号管理
     springFrameworkVersion = '4.3.9.RELEASE'
     fasterxmlJacksonVersion = '2.9.4'
+    slf4jVersion = '1.7.16'
+    logbackVersion = '1.1.3'
 }
