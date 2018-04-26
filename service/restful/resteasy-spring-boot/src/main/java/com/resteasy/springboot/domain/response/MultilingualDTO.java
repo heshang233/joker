@@ -1,5 +1,7 @@
 package com.resteasy.springboot.domain.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -13,16 +15,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public class MultilingualDTO {
     @XmlElement(name = "FilmName")
+    @JsonProperty("name")
     private String name;
     @XmlElement(name = "Language")
+    @JsonProperty("language_code")
     private String languageCode;
     @XmlElement(name = "Director")
+    @JsonProperty("director")
     private String director;
     @XmlElement(name = "Starring")
+    @JsonProperty("actor")
     private String actor;
     @XmlElement(name = "FilmType")
+    @JsonProperty("type")
     private String type;
     @XmlElement(name = "Description")
+    @JsonProperty("description")
     private String description;
 
     public String getName() {

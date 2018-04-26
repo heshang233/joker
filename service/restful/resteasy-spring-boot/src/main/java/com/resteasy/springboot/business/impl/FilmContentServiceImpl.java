@@ -6,6 +6,7 @@ import com.resteasy.springboot.domain.request.GetFilmInfoRequestDTO;
 import com.resteasy.springboot.domain.request.GetFilmListRequestDTO;
 import com.resteasy.springboot.domain.response.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -18,43 +19,49 @@ public class FilmContentServiceImpl implements FilmContentService {
 
     private static Map<String,MapDTO> map = new HashMap<>();
 
-    @Override
-    public FilmListResultDTO addFilmContent(FilmInfoDTO dto) {
+    public static void main(String[] args) {
+        UUID uuid = UUID.randomUUID();
 
-        if (map.containsKey(dto.getUuid())) {
+        System.out.println("urn:uuid:"+uuid.toString());
+    }
+
+    @Override
+    public List<FilmList> addFilmContent(FilmInfoDTO dto) {
+        if (!StringUtils.isEmpty(dto.getUuid())&&map.containsKey(dto.getUuid())) {
             MapDTO mapDTO = map.get(dto.getUuid());
             mapDTO.setFilmInfoDTO(dto);
             map.put(dto.getUuid(),mapDTO);
         }else {
+            String uuid = "urn:uuid:"+UUID.randomUUID().toString();
+            dto.setUuid(uuid);
             MapDTO mapDTO = new MapDTO();
             mapDTO.setFilmInfoDTO(dto);
-            map.put(dto.getUuid(),mapDTO);
+            map.put(uuid,mapDTO);
         }
 
         Collection<MapDTO> mapDTOs = map.values();
 
-        FilmListResultDTO filmListResultDTO = new FilmListResultDTO();
-        FilmListDTO filmListDTO = new FilmListDTO();
 
-        List<FilmInfoSimpleDTO> filmInfoDTOS = new ArrayList<>();
+        List<FilmList> filmLists = new ArrayList<>();
 
         mapDTOs.forEach(mapInfo ->{
-            FilmInfoSimpleDTO filmInfoSimpleDTO = new FilmInfoSimpleDTO();
-            filmInfoSimpleDTO.setName(mapInfo.getFilmInfoDTO().getMultilingualListDTO().getMultilingualDTO().get(0).getName());
-            filmInfoSimpleDTO.setUuid(mapInfo.getFilmInfoDTO().getUuid());
-            filmInfoDTOS.add(filmInfoSimpleDTO);
+            FilmList filmList = new FilmList();
+            filmList.setName(mapInfo.getFilmInfoDTO().getMultilingualListDTO().getMultilingualDTO().get(0).getName());
+            filmList.setUuid(mapInfo.getFilmInfoDTO().getUuid());
+            FilmFtpDTO filmFtpDTO = mapInfo.getFilmFtpDTO();
+            if (filmFtpDTO!=null){
+                String ftpPath = filmFtpDTO.getFtpPath();
+                String substring = ftpPath.substring(ftpPath.lastIndexOf("/") + 1);
+                filmList.setFile_name(substring);
+            }
+            filmLists.add(filmList);
         });
 
-        filmListDTO.setFilmCount(map.size());
-        filmListDTO.setFilmInfos(filmInfoDTOS);
-        filmListResultDTO.setStatus(0);
-        filmListResultDTO.setFilmListDTO(filmListDTO);
-
-        return filmListResultDTO;
+        return filmLists;
     }
 
     @Override
-    public FilmListResultDTO addFilmFtp(FilmFtpDTO dto) throws Exception {
+    public List<FilmList> addFilmFtp(FilmFtpDTO dto) throws Exception {
 
         if (map.containsKey(dto.getUuid())) {
             MapDTO mapDTO = map.get(dto.getUuid());
@@ -70,24 +77,44 @@ public class FilmContentServiceImpl implements FilmContentService {
 
         Collection<MapDTO> mapDTOs = map.values();
 
-        FilmListResultDTO filmListResultDTO = new FilmListResultDTO();
-        FilmListDTO filmListDTO = new FilmListDTO();
-
-        List<FilmInfoSimpleDTO> filmInfoDTOS = new ArrayList<>();
+        List<FilmList> filmLists = new ArrayList<>();
 
         mapDTOs.forEach(mapInfo ->{
-            FilmInfoSimpleDTO filmInfoSimpleDTO = new FilmInfoSimpleDTO();
-            filmInfoSimpleDTO.setName(mapInfo.getFilmInfoDTO().getMultilingualListDTO().getMultilingualDTO().get(0).getName());
-            filmInfoSimpleDTO.setUuid(mapInfo.getFilmInfoDTO().getUuid());
-            filmInfoDTOS.add(filmInfoSimpleDTO);
+            FilmList filmList = new FilmList();
+            filmList.setName(mapInfo.getFilmInfoDTO().getMultilingualListDTO().getMultilingualDTO().get(0).getName());
+            filmList.setUuid(mapInfo.getFilmInfoDTO().getUuid());
+            FilmFtpDTO filmFtpDTO = mapInfo.getFilmFtpDTO();
+            if (filmFtpDTO!=null){
+                String ftpPath = filmFtpDTO.getFtpPath();
+                String substring = ftpPath.substring(ftpPath.lastIndexOf("/") + 1);
+                filmList.setFile_name(substring);
+            }
+            filmLists.add(filmList);
         });
 
-        filmListDTO.setFilmCount(map.size());
-        filmListDTO.setFilmInfos(filmInfoDTOS);
-        filmListResultDTO.setStatus(0);
-        filmListResultDTO.setFilmListDTO(filmListDTO);
+        return filmLists;
+    }
 
-        return filmListResultDTO;
+    @Override
+    public List<FilmList> getList() {
+        Collection<MapDTO> mapDTOs = map.values();
+
+        List<FilmList> filmLists = new ArrayList<>();
+
+        mapDTOs.forEach(mapInfo ->{
+            FilmList filmList = new FilmList();
+            filmList.setName(mapInfo.getFilmInfoDTO().getMultilingualListDTO().getMultilingualDTO().get(0).getName());
+            filmList.setUuid(mapInfo.getFilmInfoDTO().getUuid());
+            FilmFtpDTO filmFtpDTO = mapInfo.getFilmFtpDTO();
+            if (filmFtpDTO!=null){
+                String ftpPath = filmFtpDTO.getFtpPath();
+                String substring = ftpPath.substring(ftpPath.lastIndexOf("/") + 1);
+                filmList.setFile_name(substring);
+            }
+            filmLists.add(filmList);
+        });
+
+        return filmLists;
     }
 
     @Override

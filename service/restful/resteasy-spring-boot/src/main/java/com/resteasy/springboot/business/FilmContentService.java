@@ -5,11 +5,9 @@ import com.resteasy.springboot.domain.request.GetFilmInfoRequestDTO;
 import com.resteasy.springboot.domain.request.GetFilmListRequestDTO;
 import com.resteasy.springboot.domain.response.*;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * @author huangsy
@@ -19,16 +17,22 @@ import javax.ws.rs.core.MediaType;
 public interface FilmContentService {
 
     @POST
-    @Path("/FilmServices/AddFilmInfo")
-    @Produces(MediaType.APPLICATION_XML)
-    @Consumes(MediaType.APPLICATION_XML)
-    FilmListResultDTO addFilmContent(FilmInfoDTO dto);
+    @Path("/FilmServices/add-info")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    List<FilmList> addFilmContent(FilmInfoDTO dto);
 
     @POST
-    @Path("/FilmServices/AddFilmDCP")
-    @Produces(MediaType.APPLICATION_XML)
-    @Consumes(MediaType.APPLICATION_XML)
-    FilmListResultDTO addFilmFtp(FilmFtpDTO dto) throws Exception;
+    @Path("/FilmServices/add-ftp")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    List<FilmList> addFilmFtp(FilmFtpDTO dto) throws Exception ;
+
+    @GET
+    @Path("/FilmServices/get-list")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    List<FilmList> getList();
 
     @POST
     @Path("/FilmServices/GetFilmList")

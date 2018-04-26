@@ -1,5 +1,7 @@
 package com.resteasy.springboot.domain.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.*;
 
 /**
@@ -10,14 +12,19 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.NONE)
 public class FilmInfoDTO{
     @XmlElement(name = "FilmUUID")
+    @JsonProperty("uuid")
     private String uuid;
     @XmlElement(name = "FilmAdminID")
-    private String adminId;
+    @JsonProperty("admin_id")
+    private String adminId = "test123";
     @XmlElement(name = "Duration")
+    @JsonProperty("duration")
     private Long duration;
     @XmlElement(name = "Place")
+    @JsonProperty("place")
     private String place;
     @XmlElementRef(name = "MultilingualList")
+    @JsonProperty("multilingual_list")
     private MultilingualListDTO multilingualListDTO;
 
     public String getUuid() {

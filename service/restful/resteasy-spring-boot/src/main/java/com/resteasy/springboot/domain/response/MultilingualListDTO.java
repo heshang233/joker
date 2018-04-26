@@ -1,5 +1,7 @@
 package com.resteasy.springboot.domain.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
@@ -11,8 +13,10 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.NONE)
 public class MultilingualListDTO {
     @XmlAttribute(name = "LanguageCount")
-    private int languageCount;
+    @JsonProperty("language_count")
+    private int languageCount = 3;
     @XmlElementRef(name = "Multilingual")
+    @JsonProperty("multilinguals")
     private List<MultilingualDTO> multilingualDTO;
 
     public int getLanguageCount() {
